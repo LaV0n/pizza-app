@@ -1,0 +1,12 @@
+.App {
+  display:flex ;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  border: 1px solid black;
+  width: 500px;
+  height: 500px;
+}
+
