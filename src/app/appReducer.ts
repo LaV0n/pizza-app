@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {pizzaAPI} from "../api/pizza-api";
 import {errorAsString} from "../utils/errorAsString";
+import {AxiosResponse} from "axios";
 
 export type StatusType = 'success' | 'loading' | 'error'
 
@@ -110,8 +111,8 @@ export const getMenuTC = createAsyncThunk<MenuType[], number, { rejectValue: { e
         async (restId, {dispatch, rejectWithValue}) => {
             dispatch(setStatus({status: 'loading'}))
             try {
-                const res = await pizzaAPI.getMenu(restId)
-                return res.data
+                const res:AxiosResponse<MenuType[]> = await pizzaAPI.getMenu(restId)
+                return res.data.filter(m=>m.category==='Pizza')
             } catch (err) {
                 const error = errorAsString(err)
                 return rejectWithValue({error})

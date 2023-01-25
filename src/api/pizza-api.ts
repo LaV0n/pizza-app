@@ -9,6 +9,6 @@ export const pizzaAPI={
         return instance.get('')
     },
     getMenu(restaurantId:number){
-        return instance.get(`${restaurantId}/menu?category=Pizza&orderBy=rank`)
+        return instance.get(`${restaurantId}/menu?category=Pizza`)
     }
 }

@@ -17,6 +17,7 @@ function App() {
     let currentRestaurantId = 0
     let currentCost=0
     const [currentPizza, setCurrentPizza] = useState<SelectOptionType | null>()
+    const notice =useAppSelector(state => state.app.notice)
 
     let restaurantsFormat= setSelectFormat(restaurants)
     let menuFormat=setSelectFormat(menu)
@@ -37,7 +38,6 @@ function App() {
         dispatch(getRestaurantsTC())
     }, [])
 
-
         if (currentRestaurant){
             currentRestaurantId=restaurants.find(r=>r.name===currentRestaurant.label)!.id
         }
@@ -56,14 +56,23 @@ function App() {
     return (
         <div className={styles.App}>
             <div className={styles.container}>
+                <h3>
+                    Create new entry
+                </h3>
                 <Select options={restaurantsFormat}
+                        placeholder="Select restaurant"
                         onChange={handleSelectionChange}/>
                 <Select options={menuFormat}
+                        placeholder="Select pizza"
                         onChange={handleSelectionChangeMenu}/>
                 <TableOrder restaurant={currentRestaurant?.label}
                             pizza={currentPizza?.label}
                             cost={currentCost}/>
             </div>
+            {
+                notice &&
+                <div className={styles.errorMessage}>{notice}</div>
+            }
         </div>
     );
 }

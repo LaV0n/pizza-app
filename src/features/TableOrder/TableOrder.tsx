@@ -56,35 +56,48 @@ export const TableOrder = ({restaurant, pizza, cost}: TableOrderType) => {
                 Add to table
             </button>
             <table>
+                <caption>Calculation</caption>
+                <thead>
                 <tr>
-                    <th>Restaurant</th>
-                    <th>Product</th>
+                    <th className={styles.rightAlign}>Restaurant</th>
+                    <th className={styles.rightAlign}>Product</th>
                     <th>Cost</th>
                     <th>Action</th>
                 </tr>
+                </thead>
+                <tbody>
                 {orderMenu.map(i =>
                     <tr key={i.id}>
-                        <td>{i.restaurant}</td>
-                        <td>{i.pizza}</td>
+                        <td className={styles.rightAlign}>{i.restaurant}</td>
+                        <td className={styles.rightAlign}>{i.pizza}</td>
                         {selectedId === i.id
-                            ? <input type="number" value={input}
-                                     onChange={(e) => setInput(+e.target.value)}
-                                     onBlur={() => closeInputHandler(i.id)}/>
+                            ? <td >
+                                <input type="number" value={input} size={1}
+                                       autoFocus
+                                       onChange={(e) => setInput(+e.target.value)}
+                                       onBlur={() => closeInputHandler(i.id)}
+                                />
+                            </td>
                             : <td onDoubleClick={() => setInputHandler(i.id, i.order)}>
                                 {i.order}
                             </td>
                         }
                         <td onClick={() => {
                             removeOrderHandler(i.id)
-                        }}>Remove
+                        }}
+                            style={{cursor: 'pointer'}}>
+                            Remove
                         </td>
                     </tr>
                 )}
+                </tbody>
+                <tfoot>
                 <tr>
-                    <td>Summary:</td>
-                    <td>{orderMenu.reduce((acc, i) => acc + i.order, 0)}</td>
-                    <td></td>
+                    <td colSpan={2} style={{textAlign: 'end'}}>Summary:</td>
+                    <td style={{textAlign: 'end'}}>{orderMenu.reduce((acc, i) => acc + i.order, 0)} USD</td>
+
                 </tr>
+                </tfoot>
             </table>
         </div>
     );
