@@ -1,0 +1,10 @@
+.container{
+    width: 90%;
+}
+table{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+tr{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}

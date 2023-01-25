@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import styles from './App.module.css';
 import {useAppDispatch, useAppSelector} from "./store";
-import {deleteAllMenu, getMenuTC, getRestaurantsTC, MenuType, RestaurantsType} from "./appReducer";
+import {deleteAllMenu, getMenuTC, getRestaurantsTC} from "./appReducer";
 import Select from "react-select";
+import { SelectOptionType, setSelectFormat } from '../utils/selectFormat';
+import {TableOrder} from "../features/TableOrder/TableOrder";
 
-type SelectOptionType = { label: string, value: string }
+
 
 function App() {
 
@@ -13,15 +15,8 @@ function App() {
     const dispatch = useAppDispatch()
     const [currentRestaurant, setCurrentRestaurant] = useState<SelectOptionType | null>()
     let currentRestaurantId = 0
+    let currentCost=0
     const [currentPizza, setCurrentPizza] = useState<SelectOptionType | null>()
-
-    const setSelectFormat=(array:RestaurantsType[] | MenuType[]) =>{
-        let result: SelectOptionType[]=[]
-        for(let i=0;i<array.length;i++){
-            result.push({label: array[i].name, value: array[i].name})
-        }
-        return result
-    }
 
     let restaurantsFormat= setSelectFormat(restaurants)
     let menuFormat=setSelectFormat(menu)
@@ -46,11 +41,14 @@ function App() {
         if (currentRestaurant){
             currentRestaurantId=restaurants.find(r=>r.name===currentRestaurant.label)!.id
         }
-
+    if(currentPizza) {
+       currentCost= menu.find(m=>m.name===currentPizza.label)!.price
+    }
 
         useEffect(()=>{
-            dispatch(getMenuTC(currentRestaurantId))
-            console.log('check')
+            if (currentRestaurantId!==0){
+                dispatch(getMenuTC(currentRestaurantId))
+            }
         },[currentRestaurant])
 
 
@@ -58,16 +56,13 @@ function App() {
     return (
         <div className={styles.App}>
             <div className={styles.container}>
-                {menu.map(r =>
-                    <div key={r.id}>{r.name}</div>
-                )}
                 <Select options={restaurantsFormat}
                         onChange={handleSelectionChange}/>
                 <Select options={menuFormat}
                         onChange={handleSelectionChangeMenu}/>
-                <div>
-                    {currentPizza?.label}
-                </div>
+                <TableOrder restaurant={currentRestaurant?.label}
+                            pizza={currentPizza?.label}
+                            cost={currentCost}/>
             </div>
         </div>
     );
