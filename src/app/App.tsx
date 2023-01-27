@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styles from './App.module.css';
 import {useAppDispatch, useAppSelector} from "./store";
-import {deleteAllMenu, getMenuTC, getRestaurantsTC} from "./appReducer";
+import {deleteAllMenu, getMenuTC, getRestaurantsTC, setNotice} from "./appReducer";
 import Select from "react-select";
 import { SelectOptionType, setSelectFormat } from '../utils/selectFormat';
 import {TableOrder} from "../features/TableOrder/TableOrder";
-
-
 
 function App() {
 
@@ -51,7 +49,11 @@ function App() {
             }
         },[currentRestaurant])
 
-
+    if (notice){
+        setTimeout(()=>{
+            dispatch(setNotice({notice:''}),)
+        },1000)
+    }
 
     return (
         <div className={styles.App}>

@@ -67,6 +67,9 @@ const slice = createSlice({
         },
         changeItemOrder(state, action: PayloadAction<{ itemId: number, price: number }>) {
             state.orderMenu.find(i => i.id === action.payload.itemId)!.order = action.payload.price
+        },
+        setNotice(state,action:PayloadAction<{notice:string}>){
+            state.notice=action.payload.notice
         }
     },
     extraReducers: builder => {
@@ -90,7 +93,9 @@ const slice = createSlice({
 })
 
 export const appReducer = slice.reducer
-export const {setStatus, deleteAllMenu, addNewItem, deleteItem, setMenu, changeItemOrder} = slice.actions
+export const {setStatus, deleteAllMenu,
+    addNewItem, deleteItem, setMenu,
+    changeItemOrder,setNotice} = slice.actions
 
 export const getRestaurantsTC = createAsyncThunk<RestaurantsType[], undefined, { rejectValue: { error: string } }> //fix type
     ('app/getRestaurants',

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './TableOrder.module.css'
 import {useAppDispatch, useAppSelector} from "../../app/store";
-import {addNewItem, changeItemOrder, deleteItem, setMenu} from "../../app/appReducer";
+import {addNewItem, changeItemOrder, deleteItem, setMenu, setNotice} from "../../app/appReducer";
 
 type TableOrderType = {
     restaurant: string | undefined
@@ -35,8 +35,12 @@ export const TableOrder = ({restaurant, pizza, cost}: TableOrderType) => {
     }
 
     const closeInputHandler = (itemId: number) => {
-        dispatch(changeItemOrder({itemId, price: input}))
-        setSelectedId(0)
+        if(input<0){
+            dispatch(setNotice({notice:'Incorrect Input'}))
+        }else {
+            dispatch(changeItemOrder({itemId, price: input}))
+            setSelectedId(0)
+        }
     }
 
     useEffect(() => {
@@ -70,18 +74,20 @@ export const TableOrder = ({restaurant, pizza, cost}: TableOrderType) => {
                     <tr key={i.id}>
                         <td className={styles.rightAlign}>{i.restaurant}</td>
                         <td className={styles.rightAlign}>{i.pizza}</td>
-                        {selectedId === i.id
-                            ? <td >
-                                <input type="number" value={input} size={1}
-                                       autoFocus
-                                       onChange={(e) => setInput(+e.target.value)}
-                                       onBlur={() => closeInputHandler(i.id)}
-                                />
-                            </td>
-                            : <td onDoubleClick={() => setInputHandler(i.id, i.order)}>
-                                {i.order}
-                            </td>
-                        }
+                        <td >
+                            {selectedId === i.id
+                                ? <input type="number" value={input}
+                                           autoFocus
+                                           onChange={(e) => setInput(+e.target.value)}
+                                           onBlur={() => closeInputHandler(i.id)}
+                                    />
+
+                                : <div onDoubleClick={() => setInputHandler(i.id, i.order)}>
+                                    {i.order}
+                                </div>
+                            }
+                        </td>
+
                         <td onClick={() => {
                             removeOrderHandler(i.id)
                         }}
