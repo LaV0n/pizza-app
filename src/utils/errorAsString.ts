@@ -1,2 +1,1 @@
-export const errorAsString = (err: any): string =>
-    err ? err.message : 'Unexpected error'
+export const errorAsString = (err: any): string => (err ? err.message : 'Unexpected error')
